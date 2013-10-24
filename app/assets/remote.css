@@ -1,0 +1,6 @@
+#fetchr-selection {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid #000;
+  position: absolute;
+  pointer-events: none;
+}

@@ -1,0 +1,29 @@
+.row
+  #sidebar.col-md-2
+    button.btn.btn-default.add-resource Add resource
+      
+    //ul.resources
+    //  each resource in resources
+    //    li= resource.name
+
+    #preview
+
+  #main.col-md-10
+    mixin field(name, label)
+      div(class="form-group #{ name }")
+        label(for="path-item")=label
+
+        .input-group
+          span.input-group-btn
+            button.btn.btn-default.btn-getpath(data-path=name) &#9759;
+          input.node-path(data-role="tagsinput", data-path=name)
+
+    p
+      mixin field('item', 'Item')
+      mixin field('title', 'Title')
+      mixin field('description', 'Description')
+      mixin field('permalink', 'Permalink')
+
+    p#item-view
+
+    p#browser-wrap
