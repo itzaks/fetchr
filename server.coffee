@@ -10,7 +10,6 @@ class Server
     @app.use @express.bodyParser()
     
     @app.post "/", (req, res) -> res.sendfile "public/index.html"
-    @app.post "/submit", @addUser
     @app.get "/url/:site", @getResource
     
     #start on heroku

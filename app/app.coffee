@@ -20,9 +20,10 @@ module.exports = class Application
 
     @router = new Router
     @resources = new Resources
+    @on "navigate", (url) -> @router.navigate url
 
     $ => @ready()
 
   ready: ->
     @layout = new Layout {el: $("#application")}
-    Backbone.history.start pushState: on, trigger: on
+    Backbone.history.start pushState: off, trigger: on

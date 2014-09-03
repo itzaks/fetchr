@@ -16,7 +16,7 @@ module.exports = class Index extends View
     window.addEventListener 'message', @messageReceived, false
 
   domReady: -> 
-    @getResource("http://localhost:5000")
+    @getCurrentUrl()
 
     _pathChange = _.throttle @pathChange, 100
 
@@ -25,6 +25,11 @@ module.exports = class Index extends View
         .on('itemAdded', _pathChange)
         .on('itemRemoved', _pathChange)
         .tagsinput( itemValue: (text) -> text )
+
+  getCurrentUrl: ->
+    url = decodeURIComponent(window.location.hash.substr 1)
+    console.log url
+    @getResource url
 
   pathChange: (ev) =>
     $field = $(ev.currentTarget)
@@ -39,15 +44,15 @@ module.exports = class Index extends View
 
   grabMeta: ->
     itemPath = @paths.item.join(" ").replace("body ", "")
-    $meta = @$remote.find(itemPath).html()
-    console.log $meta, itemPath, @$remote
-    (@$ "#item-view").html $meta
 
   fetchPreview: ->
     #posts = for node in $(@paths.title.join(" "), data)
 
   getResource: (url) ->
-    $.get "/url/#{ encodeURIComponent(url) }", (data) =>
+    urlEncoded = encodeURIComponent(url)
+    app.trigger 'navigate', "fetch/#{ urlEncoded }"
+
+    $.get "/url/#{ urlEncoded }", (data) =>
       @attachTools(data)
 
   setPath: (ev) =>

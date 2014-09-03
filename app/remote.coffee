@@ -1,8 +1,30 @@
 $ = jQuery.noConflict()
 
+class ParseItem
+  constructor: (@$el) ->
+    @traverse_children()
+
+  traverse_children: ->
+    @$el.children (el) ->
+      switch el.tagName.toLowerCase()
+        when "a" then @check_link(el)
+        when "img" then @check_image(el)
+        else @check_tag(el)
+
+  check_tag: (el) ->
+    
+
+  ###
+    find title by font-size
+    find image by dimension
+    find permalink(s)
+    find description by text length
+  ###
+
+
 module.exports = class RemoteSite
   selected: null
-  drawBorder: off 
+  drawBorder: off
 
   constructor: ->
     @$doc = $(document)
@@ -12,7 +34,7 @@ module.exports = class RemoteSite
   init: =>
     @$selection = $("<div id=fetchr-selection></div>").appendTo "body"
     @$doc.on "mousemove", @mousemove
-    
+
     $("body").on "click", (e) =>
       e.preventDefault()
       @drawBorder = off
@@ -45,7 +67,7 @@ module.exports = class RemoteSite
 
     return unless @drawBorder
     return if @selected is target
-    
+
     @selected = target
     $el = ($ target)
     @setSelection $el
@@ -72,18 +94,18 @@ $.fn.getPath = (path = "", $stop = null) ->
     id = $node.attr("id")
     class_ = $node.attr("class")
     serialized += "#" + id if id
-    
+
     # Add any classes.
     if class_?
       classes = (c for c in class_.split /[\s\n]+/ when c and c.match /^(?!fetchr)/)
       serialized += "." + classes.join(".") if classes.length
 
     return serialized
-    
+
   # If this element is <html> we've reached the end of the path.
-  return "html" + path if @is("html") 
+  return "html" + path if @is("html")
   return serializeNode($stop) + path if ($stop? and @is $stop)
-  
+
   current = (serializeNode @)
 
   # Recurse up the DOM.
